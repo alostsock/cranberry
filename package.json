@@ -9,10 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "chroma-js": "^3.1.1",
     "preact": "^10.23.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.0",
+    "@types/chroma-js": "^2.4.4",
+    "prettier": "^3.3.3",
+    "sass-embedded": "^1.79.4",
     "typescript": "^5.5.3",
     "vite": "^5.4.1"
   }

@@ -1,0 +1,38 @@
+.Swatches {
+  display: flex;
+  flex-direction: column;
+  gap: 1em var(--1);
+}
+
+.Shades {
+  --rows: 2;
+  --swatch-height: 5em;
+  --gap: 0.5em;
+
+  width: fit-content;
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  max-height: calc(var(--rows) * var(--swatch-height) + var(--gap));
+
+  button.shade {
+    background: none;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 7em;
+    height: var(--swatch-height);
+    padding: var(--05) 0.5em;
+    border-radius: var(--border-radius);
+
+    pre {
+      text-align: left;
+      width: fit-content;
+      margin: 0;
+    }
+  }
+}
