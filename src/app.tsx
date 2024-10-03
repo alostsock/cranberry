@@ -57,6 +57,15 @@ export function App() {
   );
 }
 
+function CopyButton({ text }: { text: string }) {
+  const handleCopy = () => navigator.clipboard.writeText(text);
+  return (
+    <button class="CopyButton" onClick={handleCopy}>
+      📋
+    </button>
+  );
+}
+
 function ColorPickers({
   palette,
   setPalette,
@@ -64,30 +73,33 @@ function ColorPickers({
   palette: Color[];
   setPalette: (colors: Color[]) => void;
 }) {
+  const updateAttrForIndex = (
+    index: number,
+    attr: keyof Color,
+    value: Color[keyof Color],
+  ) => {
+    const newPalette = JSON.parse(JSON.stringify(palette));
+    newPalette[index] = {
+      ...newPalette[index],
+      [attr]: value,
+    };
+    setPalette(newPalette);
+  };
+
   return (
     <section className="ColorPickers">
       {palette.map((color, i) => (
         <ColorPicker
           key={`${i}-${color.name}`}
           id={`${i}-${color.name}`}
-          name={color.name}
-          hex={color.hex}
-          setName={(name) => {
-            const newPalette = JSON.parse(JSON.stringify(palette));
-            newPalette[i] = {
-              ...newPalette[i],
-              name,
-            };
-            setPalette(newPalette);
-          }}
-          setHex={(hex) => {
-            const newPalette = JSON.parse(JSON.stringify(palette));
-            newPalette[i] = {
-              ...newPalette[i],
-              hex,
-            };
-            setPalette(newPalette);
-          }}
+          {...color}
+          setName={(name) => updateAttrForIndex(i, "name", name)}
+          setHex={(hex) => updateAttrForIndex(i, "hex", hex)}
+          setShadingFunction={(f) =>
+            updateAttrForIndex(i, "shadingFunction", f)
+          }
+          setWhiteMixRatio={(r) => updateAttrForIndex(i, "whiteMixRatio", r)}
+          setBlackMixRatio={(r) => updateAttrForIndex(i, "blackMixRatio", r)}
         />
       ))}
     </section>
@@ -98,13 +110,34 @@ interface ColorPickerProps {
   id: string;
   name: string;
   hex: string;
+  shadingFunction: ShadingFunction;
+  whiteMixRatio: number;
+  blackMixRatio: number;
   setName: (label: string) => void;
   setHex: (hex: string) => void;
+  setShadingFunction: (shadingFunction: ShadingFunction) => void;
+  setWhiteMixRatio: (whiteMixRatio: number) => void;
+  setBlackMixRatio: (blackMixRatio: number) => void;
 }
 
-function ColorPicker({ id, name, hex, setName, setHex }: ColorPickerProps) {
+function ColorPicker({
+  id,
+  name,
+  hex,
+  shadingFunction,
+  whiteMixRatio,
+  blackMixRatio,
+  setName,
+  setHex,
+  setShadingFunction,
+  setWhiteMixRatio,
+  setBlackMixRatio,
+}: ColorPickerProps) {
   const nameInputId = `${id}-name`;
   const hexInputId = `${id}-hex`;
+  const shadingFunctionSelectId = `${id}-shading-function`;
+  const whiteMixRatioInputId = `${id}-white-mix-ratio`;
+  const blackMixRatioInputId = `${id}-black-mix-ratio`;
 
   return (
     <>
@@ -113,6 +146,7 @@ function ColorPicker({ id, name, hex, setName, setHex }: ColorPickerProps) {
         value={name}
         onChange={(e) => setName(e.currentTarget.value ?? "")}
       />
+
       <input
         id={hexInputId}
         type="color"
@@ -124,6 +158,40 @@ function ColorPicker({ id, name, hex, setName, setHex }: ColorPickerProps) {
           <code>{hex}</code>
         </pre>
       </label>
+      <CopyButton text={hex} />
+
+      <label for={shadingFunctionSelectId}>Shading function</label>
+      <select
+        id={shadingFunctionSelectId}
+        value={shadingFunction}
+        onChange={(e) =>
+          setShadingFunction(
+            (e.currentTarget.value as ShadingFunction) ?? "linear",
+          )
+        }
+      >
+        {Object.keys(SHADING).map((functionName) => (
+          <option key={functionName} value={functionName}>
+            {functionName}
+          </option>
+        ))}
+      </select>
+
+      <label for={whiteMixRatioInputId}>Max brightness</label>
+      <input
+        id={whiteMixRatioInputId}
+        type="number"
+        value={whiteMixRatio}
+        onChange={(e) => setWhiteMixRatio(Number(e.currentTarget.value) || 0.9)}
+      />
+
+      <label for={blackMixRatioInputId}>Max darkness</label>
+      <input
+        id={blackMixRatioInputId}
+        type="number"
+        value={blackMixRatio}
+        onChange={(e) => setBlackMixRatio(Number(e.currentTarget.value) || 0.9)}
+      />
     </>
   );
 }

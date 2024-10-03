@@ -7,14 +7,30 @@
   gap: var(--1) 1em;
 }
 
+.CopyButton {
+  width: min-content;
+}
+
 .ColorPickers {
+  width: 100%;
+
   display: grid;
-  grid-template-columns: repeat(3, min-content);
+  grid-template-columns: repeat(10, min-content);
   align-items: center;
   gap: var(--05) 0.5em;
 
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
   input:not([type="color"]) {
     max-width: 6em;
+  }
+
+  input[type="number"] {
+    max-width: 4.5em;
   }
 }
 
@@ -42,7 +58,6 @@
 
     width: 7em;
     height: 5em;
-    padding: var(--05) 0.5em;
     border-radius: var(--border-radius);
 
     pre {
