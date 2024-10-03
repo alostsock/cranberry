@@ -1,3 +1,23 @@
+#app {
+  width: 100%;
+
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  gap: var(--1) 1em;
+}
+
+.ColorPickers {
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
+  align-items: center;
+  gap: var(--05) 0.5em;
+
+  input:not([type="color"]) {
+    max-width: 6em;
+  }
+}
+
 .Swatches {
   display: flex;
   flex-direction: column;
@@ -5,16 +25,12 @@
 }
 
 .Shades {
-  --rows: 2;
-  --swatch-height: 5em;
-  --gap: 0.5em;
-
   width: fit-content;
-  display: flex;
-  flex-direction: column-reverse;
-  flex-wrap: wrap;
-  gap: var(--gap);
-  max-height: calc(var(--rows) * var(--swatch-height) + var(--gap));
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-flow: column;
+  gap: var(--05);
 
   button.shade {
     background: none;
@@ -25,14 +41,16 @@
     align-items: center;
 
     width: 7em;
-    height: var(--swatch-height);
+    height: 5em;
     padding: var(--05) 0.5em;
     border-radius: var(--border-radius);
 
     pre {
-      text-align: left;
       width: fit-content;
-      margin: 0;
     }
   }
+}
+
+.CssVariablesOutput {
+  display: block;
 }
