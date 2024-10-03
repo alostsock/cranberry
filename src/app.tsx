@@ -240,13 +240,21 @@ hsl(${h.toFixed(2)}
 }
 
 function Shades({ colors }: { colors: chroma.Color[] }) {
+  const brightest = colors[0];
+  const darkest = colors[colors.length - 1];
+
   return (
     <div className="Shades">
       {colors.map((color, i) => {
+        const fontColor =
+          chroma.contrast(brightest, color) >= chroma.contrast(darkest, color)
+            ? brightest
+            : darkest;
+
         return (
-          <button key={i} className="shade" style={{ background: color.css() }}>
-            <pre>{formatHslStr(color)}</pre>
-          </button>
+          <div key={i} className="shade" style={{ background: color.css() }}>
+            <pre style={{ color: fontColor.css() }}>{formatHslStr(color)}</pre>
+          </div>
         );
       })}
     </div>
