@@ -20,7 +20,7 @@ interface Color {
   blackMixRatio: number;
 }
 
-const DEFAULT_COLORS = [
+const DEFAULT_COLORS: Color[] = [
   {
     name: "gray",
     hex: "#302c2c",
@@ -39,14 +39,14 @@ const DEFAULT_COLORS = [
     name,
     hex,
     targetIndex: 5,
-    shadingFunction: "easeInOut",
+    shadingFunction: "easeInOut" as ShadingFunction,
     whiteMixRatio: 0.9,
     blackMixRatio: 0.85,
   })),
 ] as const;
 
 export function App() {
-  const [palette, setPalette] = useState<Color[]>(DEFAULT_COLORS);
+  const [palette, setPalette] = useState<Color[]>([...DEFAULT_COLORS]);
 
   return (
     <>

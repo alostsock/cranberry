@@ -11,4 +11,5 @@ export default defineConfig({
     },
   },
   plugins: [preact()],
+  base: "/cranberry/",
 });
